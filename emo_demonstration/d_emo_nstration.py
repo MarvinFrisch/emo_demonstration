@@ -14,7 +14,7 @@ from emo_demonstration.ur5_trajectory_publisher import URTrajectoryPublisher
 from emo_demonstration.io_service_client import IOServiceClient
 
 def load_assembly(folderPath, spawnPoint, spawnOrient=[0, 0, 0], scaleFactor=1.0):
-    """Loads all URDFs in the speciied Folder.
+    """Loads all URDFs in the specified Folder.
 
     Args:
         folderPath: Path of URDFs to load
@@ -149,7 +149,7 @@ class emo_controler():
         rclpy.init()        
         self.subscriber = SynchronizedSim(self.robot)
         self.trajectory_publisher = URTrajectoryPublisher(robot=self.robot)
-        self.gripper_node = IOServiceClient()
+        # self.gripper_node = IOServiceClient()
         self.synchronization = synchronization     
 
 
@@ -319,10 +319,10 @@ class emo_controler():
 
         if inverted:
             gripper.actuate(0.0)
-            self.gripper_node.close_gripper()
+            # self.gripper_node.close_gripper()
         else:
             gripper.actuate(1.0)
-            self.gripper_node.open_gripper()
+            # self.gripper_node.open_gripper()
         for _ in range(50):
             p.stepSimulation()     
 
@@ -347,10 +347,10 @@ class emo_controler():
 
         if inverted:
             gripper.actuate(1.0)
-            self.gripper_node.open_gripper()
+            # self.gripper_node.open_gripper()
         else:
             gripper.actuate(0.2)
-            self.gripper_node.close_gripper()
+            # self.gripper_node.close_gripper()
         for _ in range(50):
             p.stepSimulation()   
 
@@ -366,10 +366,10 @@ class emo_controler():
         p.removeConstraint(grip_constraint)  
         if inverted:
             gripper.actuate(0.0)
-            self.gripper_node.close_gripper()
+            # self.gripper_node.close_gripper()
         else:
             gripper.actuate(1.0)
-            self.gripper_node.open_gripper()
+            # self.gripper_node.open_gripper()
         for _ in range(50):
             p.stepSimulation()  
         self.move_linear(gripper, droping_move_up, 0.1, 40)
@@ -425,7 +425,7 @@ def main():
     robot, gripper, screwdriver, camera = setup_base_sim()
     controler = emo_controler(robot, synchronization=True)  
     controler.synchronize_real_pose(3.0)
-    controler.gripper_node.open_gripper()
+    # controler.gripper_node.open_gripper()
     gripper.actuate(1.0)
 
   
@@ -448,15 +448,20 @@ def main():
     #controler.grip(gripper, motor[i], [[0.10, 0.105, 0.8]], constraint_ids[i-1], [0,0.00,-0.01],0.125)
     original_pos = {}
     controler.switch_to_gripper()
-    """i=1
-    original_pos[i], _ = controler.grip(gripper, motor[i], [-0.2, 0.075, 0.01], constraint_ids[i-1], [0, -0.0565,-0.02], 0.06, False)
-    i=2
-    original_pos[i], _ = controler.grip(gripper, motor[i], [-0.2, 0.0, 0.101], constraint_ids[i-1], [0, -0.012,-0.025], 0.19, False)"""
-    i=7
-    original_pos[i], _ = controler.grip(gripper, motor[i] ,[-0.2, -0.150, 0.057], constraint_ids[i-1], [0, -0.042,-0.03], 0.1, False)
 
-    i=7
-    original_pos[i], _ = controler.grip(gripper, motor[i] ,original_pos[i], constraint_ids[i-1], [0, -0.042,-0.03], 0.1, False)
+    for t in range(50):
+        i=1
+        original_pos[i], _ = controler.grip(gripper, motor[i], [-0.2, 0.075, 0.01], constraint_ids[i-1], [0, -0.0565,-0.02], 0.1, False)
+        # i=2
+        # original_pos[i], _ = controler.grip(gripper, motor[i], [-0.2, 0.0, 0.101], constraint_ids[i-1], [0, -0.012,-0.025], 0.19, False)
+        # i=7
+        # original_pos[i], _ = controler.grip(gripper, motor[i] ,[-0.2, -0.150, 0.057], constraint_ids[i-1], [0, -0.042,-0.03], 0.1, False)
+
+        i=1
+        _ , _ = controler.grip(gripper, motor[i] ,original_pos[i], constraint_ids[i-1], [0, -0.0565, -0.02], 0.2, False)
+        for i in motor:
+            p.removeBody(i)
+        motor, constraint_ids = load_assembly(motor_path, spawn_point, spawn_orient, 0.001)
 
     #####################################################EMO
     """initial_position = spawn_point + np.array([-0.0, 0.0, 0.2]) #np.array([0, 0.2, 1.0])
