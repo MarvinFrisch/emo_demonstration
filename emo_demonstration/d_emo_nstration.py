@@ -433,7 +433,7 @@ def main():
     #controler.switch_to_screwdriver()
     
 
-    spawn_point = np.array([-0.0015, -0.003, 0.005])
+    spawn_point = np.array([0,0,0])
     spawn_orient = p.getQuaternionFromEuler([0, 0, np.pi/180 * 0.0])
     motor, constraint_ids = load_assembly(motor_path, spawn_point, spawn_orient, 0.001)
 

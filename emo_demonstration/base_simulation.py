@@ -12,6 +12,7 @@ def setup_base_sim(mode = "gui"):
     main_endeffector_urdf_file = os.path.join(file_directory, 'urdf', 'endeffectorV2.urdf')
     screw_drifer_addon_urdf_file = os.path.join(file_directory, 'urdf', 'screw_driver_addon.urdf')
     camera_addon_urdf_file = os.path.join(file_directory, 'urdf', 'depth_camera.urdf')
+    table_stl_file = os.path.join(file_directory, 'urdf', 'mesh', 'visual', 'kgt_base.stl')
 
     if mode == "gui":
         physics_client = p.connect(p.GUI, options='--background_color_red=0.5 ' +
@@ -35,7 +36,8 @@ def setup_base_sim(mode = "gui"):
     start_orientation = p.getQuaternionFromEuler([0, 0, 0])
 
   
-
+    # table = p.createVisualShape(shapeType=p.GEOM_MESH, fileName=table_stl_file,meshScale=[0.001, 0.001, 0.001])
+    # table_id = p.createMultiBody(baseVisualShapeIndex=table, basePosition = (-0.2,-0.2,-1.1), baseOrientation=(0,0,0,1))
     robot = pi.RobotBase(sdmbot_urdf_file, [0, 0, 0], start_orientation)
     gripper = pi.Gripper(main_endeffector_urdf_file, [0, 0, 0], start_orientation, tcp_frame="gripper_center_link")
     gripper.couple(robot,endeffector_name='tool0')
