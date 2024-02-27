@@ -434,7 +434,7 @@ def main():
     
 
     spawn_point = np.array([0,0,0])
-    spawn_orient = p.getQuaternionFromEuler([0, 0, np.pi/180 * 0.0])
+    spawn_orient = p.getQuaternionFromEuler([0, 0, np.pi/180 * 30])
     motor, constraint_ids = load_assembly(motor_path, spawn_point, spawn_orient, 0.001)
 
     ###############################################EMO
@@ -451,14 +451,14 @@ def main():
 
     for t in range(50):
         i=1
-        original_pos[i], _ = controler.grip(gripper, motor[i], [-0.2, 0.075, 0.01], constraint_ids[i-1], [0, -0.0565,-0.02], 0.1, False)
+        original_pos[i], _ = controler.grip(gripper, motor[i], [0.2, -0.05, 0.02], constraint_ids[i-1], [0, -0.0565,-0.01], 0.1, False)
         # i=2
         # original_pos[i], _ = controler.grip(gripper, motor[i], [-0.2, 0.0, 0.101], constraint_ids[i-1], [0, -0.012,-0.025], 0.19, False)
         # i=7
         # original_pos[i], _ = controler.grip(gripper, motor[i] ,[-0.2, -0.150, 0.057], constraint_ids[i-1], [0, -0.042,-0.03], 0.1, False)
 
         i=1
-        _ , _ = controler.grip(gripper, motor[i] ,original_pos[i], constraint_ids[i-1], [0, -0.0565, -0.02], 0.2, False)
+        _ , _ = controler.grip(gripper, motor[i] ,original_pos[i], constraint_ids[i-1], [0, -0.0565, -0.01], 0.15, False)
         for i in motor:
             p.removeBody(i)
         motor, constraint_ids = load_assembly(motor_path, spawn_point, spawn_orient, 0.001)
