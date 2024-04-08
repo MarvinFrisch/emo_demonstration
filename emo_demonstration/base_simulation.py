@@ -36,8 +36,8 @@ def setup_base_sim(mode = "gui"):
     start_orientation = p.getQuaternionFromEuler([0, 0, 0])
 
   
-    # table = p.createVisualShape(shapeType=p.GEOM_MESH, fileName=table_stl_file,meshScale=[0.001, 0.001, 0.001])
-    # table_id = p.createMultiBody(baseVisualShapeIndex=table, basePosition = (-0.2,-0.2,-1.1), baseOrientation=(0,0,0,1))
+    table = p.createVisualShape(shapeType=p.GEOM_MESH, fileName=table_stl_file,meshScale=[0.001, 0.001, 0.001])
+    table_id = p.createMultiBody(baseVisualShapeIndex=table, basePosition = (-0.2,-0.2,-1.1), baseOrientation=(0,0,0,1))
     robot = pi.RobotBase(sdmbot_urdf_file, [0, 0, 0], start_orientation)
     gripper = pi.Gripper(main_endeffector_urdf_file, [0, 0, 0], start_orientation, tcp_frame="gripper_center_link")
     gripper.couple(robot,endeffector_name='tool0')
